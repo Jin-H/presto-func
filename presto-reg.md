@@ -37,6 +37,40 @@ SELECT * FROM ${table_name} where regexp_like(${field},'a*')
 ##### 7. `\`(反斜杠)
 > 这个是用来转义的，比如在正则表达式中*(星号)表示匹配0次或者多次，但是如果想要匹配字符串星号，那么就用 `\*` 来表示
 
+##### 8. `{n}`
+> 这里的n是个正整数，用来表示匹配几个数，这个是精确匹配n个
+
+```sql
+-- 这个会匹配最后的两个a
+SELECT regexp_like('abcdefaa','a{2}'); -- 返回true
+SELECT regexp_like('abcdefaa','a{3}'); -- 返回false
+
+```
+
+##### 9. `{n,}`
+> 这里的n是个正整数，表示最少匹配n个
+
+```sql
+SELECT regexp_like('abcdefaaa', 'a{4,}'); -- 返回 false
+SELECT regexp_like('abcdefaaa', 'a{3,}'); -- 返回 true
+
+```
+
+##### 10. `{n,m}`
+> 这里的n和m是个正整数，表示匹配最少n个，最多m个
+
+```sql
+SELECT regexp_like('abcdefaaaaa', 'a{3,7}'); -- 返回 true
+```
+
+##### 11. `[x|y]`
+> 这里的x和y都是代表字符
+
+```sql
+SELECT regexp_like('这句话对不对11111', '[\u4e00-\u9fa5|0-9]+'); -- 返回true
+```
+
+
 #### `regexp_like`(string, pattern) → boolean
 > regexp_like 函数有两个参数，第一个参数是变量也就是表中的字段，第二个参数是正则表达式，返回值是true或者false
 
